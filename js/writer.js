@@ -1,5 +1,5 @@
-// TODO: Serialize local storage in JSON format
 // TODO: Remove redundancy (modularize, maybe declare common classes in script.js instead?)
+// TODO: Remove redundancy with serialization (Storing key as id in object is redundant)
 // TODO: Do i rlly need NoteContainer.notes array since i'm just iterating through localstorage.length
 
 const pretext = "Start writing ... "
@@ -24,8 +24,15 @@ class NoteBox {
     saveNote() {
         const textarea = document.getElementById(this.noteID);
         const text = textarea.value;
-        localStorage.setItem(this.noteID, text);
-        console.log(`saved note ${this.noteID}: ${text}`);
+
+        // Create JSON object to store
+        const noteObj = {
+            id: this.noteID,
+            content: text
+        }
+
+        localStorage.setItem(this.noteID, JSON.stringify(noteObj));
+        console.log(`saved note ${this.noteID}: ${noteObj}`);
     }
 
 }
@@ -68,10 +75,14 @@ class NoteContainer {
     loadNotes() {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            const value = localStorage.getItem(key);
+            const jsonValue = localStorage.getItem(key);
+
+            // Parse JSON string to object & extract content
+            const jsonParsed = JSON.parse(jsonValue);
+            const content = jsonParsed.content;
 
             // Create a new NoteBox for each saved note
-            const note = new NoteBox(value, key);
+            const note = new NoteBox(content, key);
 
             this.container.appendChild(note.textBox);
             this.container.appendChild(note.saveButton);
