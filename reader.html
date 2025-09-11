@@ -6,21 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Web Page</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/reader-style.css">
 </head>
 
 <body>
   <header>
-    <h1>Your Notes</h1>
+    <h1>Viewing Your Notes</h1>
   </header>
 
   <div class="controls">
-    <a href="index.html">Home</a>
-    <a href="writer.html">Write Notes</a>
+    <a href="index.html" class="button-link">Home</a>
+    <a href="writer.html" class="button-link">Write Notes</a>
   </div>
   
 
-  <script src="js/script.js"></script>
-  <script src="js/reader.js"></script>
+  <div id="time-stamp">Last auto-save: </div>
+
+  <div id="notes-container">
+
+  </div>
+
+  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/reader-page.js"></script>
 </body>
 
 </html>

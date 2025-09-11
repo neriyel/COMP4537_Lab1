@@ -1,0 +1,47 @@
+/* Container styling */
+#notes-container {
+    position: relative;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fdfdfd;
+}
+
+/* Notes styling (read-only textarea look) */
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 80px;
+    margin-bottom: 15px;
+    padding: 12px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    color: #333;
+    resize: none;        /* Disable resizing */
+    cursor: default;     /* Shows normal cursor since read-only */
+}
+
+/* Remove buttons (hidden on reader) */
+.save-button,
+.remove-button {
+    display: none;
+}
+
+/* Timestamp styling */
+#time-stamp {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Optional: subtle shadow for notes */
+textarea {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

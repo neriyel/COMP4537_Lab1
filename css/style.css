@@ -1,0 +1,24 @@
+/* Make links look like buttons */
+a.button-link {
+    display: inline-block;          /* Makes it behave like a button */
+    padding: 8px 16px;             /* Button size */
+    background-color: #4CAF50;     /* Green background */
+    color: #fff;                    /* White text */
+    text-decoration: none;          /* Remove underline */
+    border-radius: 5px;             /* Rounded corners */
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+}
+
+/* Hover effect */
+a.button-link:hover {
+    background-color: #45a049;     /* Slightly darker green */
+    transform: translateY(-1px);   /* Subtle lift */
+}
+
+/* Active / click effect */
+a.button-link:active {
+    background-color: #3e8e41;     /* Even darker on click */
+    transform: translateY(0);      /* Pressed effect */
+}

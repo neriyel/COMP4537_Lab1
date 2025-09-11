@@ -4,7 +4,7 @@
 
 const pretext = "Start writing ... "
 
-class NoteBox {
+export class NoteBox {
     constructor(content = "", id = Date.now()) {
         this.noteID = id;
         this.content = content;
@@ -16,59 +16,62 @@ class NoteBox {
 
         this.saveButton = document.createElement('button');
         this.saveButton.textContent = "Save";
+        this.saveButton.className = "save-button";
 
         this.removeButton = document.createElement('button');
         this.removeButton.textContent = "Remove";
-    }
-
-    saveNote() {
-        const textarea = document.getElementById(this.noteID);
-        const text = textarea.value;
-
-        // Create JSON object to store
-        const noteObj = {
-            id: this.noteID,
-            content: text
-        }
-
-        localStorage.setItem(this.noteID, JSON.stringify(noteObj));
-        console.log(`saved note ${this.noteID}: ${noteObj}`);
+        this.removeButton.className = "remove-button";
     }
 
 }
 
-class NoteContainer {
+export class NoteContainer {
     constructor(container) {
         this.container = container;
-        this.notes = {};
+
+        // Autosave properties
+        this.startAutoSave();
+        this.timestampBox = document.getElementById('time-stamp');
     }
 
-    // Removes note
-    removeNote(id) {
-        const noteBox = this.notes[id];
-        if (noteBox) {
-            this.container.removeChild(noteBox.textBox); // Must remove DOM elements
-            this.container.removeChild(noteBox.saveButton);
-            this.container.removeChild(noteBox.removeButton);
-            delete this.notes[id];
-            localStorage.removeItem(id);
+    saveNoteToStorage(note) {
+
+        // Create JSON object to store (only id and content)
+        const noteObj = {
+            id: note.noteID,
+            content: note.textBox.value
         }
+        localStorage.setItem(note.noteID, JSON.stringify(noteObj));
+        this.updateTimestamp();
+        console.log(`Note ${note.noteID} saved.`);
+    }
+
+    removeNoteFromStorage(id) {
+        localStorage.removeItem(id);
+    }
+
+    renderNote(note) {    
+        this.container.appendChild(note.textBox);
+        // Button group container
+        const buttonGroup = document.createElement('div');    
+        buttonGroup.className = "button-group";
+        buttonGroup.appendChild(note.saveButton);
+        buttonGroup.appendChild(note.removeButton);
+        this.container.appendChild(buttonGroup);
+        note.saveButton.addEventListener('click', () => {
+            this.saveNoteToStorage(note);
+        });
+        note.removeButton.addEventListener('click', () => {
+            this.removeNoteFromStorage(note.noteID);
+            this.container.removeChild(note.textBox);
+            this.container.removeChild(buttonGroup);
+        });
     }
 
     // Creates and appends new note
     newNote() {
         const note = new NoteBox();
-
-        this.container.appendChild(note.textBox);
-        this.container.appendChild(note.saveButton);
-        this.container.appendChild(note.removeButton);
-        note.saveButton.addEventListener('click', () => {
-            note.saveNote();
-        });
-        note.removeButton.addEventListener('click', () => {
-            this.removeNote(note.noteID);
-        });
-        this.notes[note.noteID] = note;
+        this.renderNote(note);
     }
 
     // Load all notes from local storage
@@ -83,35 +86,42 @@ class NoteContainer {
 
             // Create a new NoteBox for each saved note
             const note = new NoteBox(content, key);
-
-            this.container.appendChild(note.textBox);
-            this.container.appendChild(note.saveButton);
-            this.container.appendChild(note.removeButton);
-
-            // Hook up save/remove functionality
-            note.saveButton.addEventListener('click', () => {
-                note.saveNote();
-            });
-            note.removeButton.addEventListener('click', () => {
-                this.removeNote(note.noteID);
-            });
-
-            this.notes[note.noteID] = note;
+            this.renderNote(note);
         }
     }
 
+    disableEditing() {
+        this.container.querySelectorAll('.save-button, .remove-button, textarea').forEach(elem => {
+            elem.disabled = true; // Makes buttons unclickable & textarea read-only
+        });
+    }
+
+    startAutoSave() {
+        setInterval(() => {
+            this.updateTimestamp();
+            this.container.querySelectorAll('textarea').forEach(textarea => {
+                const id = textarea.id;
+                const noteObj = {
+                    id: id,
+                    content: textarea.value,
+                };
+                localStorage.setItem(id, JSON.stringify(noteObj));
+            });
+        }, 2000);
+    }
+
+    updateTimestamp() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+
+        const formatted = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        this.timestampBox.textContent = `Last saved: ${formatted}`;
+    }
+
+
 }
-
-
-// Adding note logic
-const container = document.getElementById("notes-container");
-const noteContainer = new NoteContainer(container);
-
-document.getElementById("add-note").addEventListener('click', () => {
-    noteContainer.newNote();
-})
-
-// todo: Load notes from local storage
-window.addEventListener('load', () => {
-    noteContainer.loadNotes()
-})
