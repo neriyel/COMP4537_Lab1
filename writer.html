@@ -4,32 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Web Page</title>
+  <title id="page-title"></title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/writer-style.css">
 </head>
 
 <body>
   <header>
-    <h1>Writing Notes ... </h1>
+    <h1 id="header-writer-title"></h1>
   </header>
 
 
   <div class="controls">
-    <a href="index.html" class="button-link">Home</a>
-    <a href="reader.html" class="button-link">Read Notes</a>
+    <a href="index.html" class="button-link" id="home-link"></a>
+    <a href="reader.html" class="button-link" id="read-link"></a>
   </div>
 
-  <button id="add-note">Add a Note +</button>
+  <button id="add-note"></button>
 
-  <div id="time-stamp">Last auto-saved: </div>
+  <div id="time-stamp"></div>
 
   <div id="notes-container">
 
   </div>
 
 
-  <script src="js/script.js"></script>
+  <!-- <script type="module" src="js/script.js"></script> -->
   <script type="module" src="js/writer-page.js"></script>
 </body>
 

@@ -2,7 +2,8 @@
 // TODO: Remove redundancy with serialization (Storing key as id in object is redundant)
 // TODO: Do i rlly need NoteContainer.notes array since i'm just iterating through localstorage.length
 
-const pretext = "Start writing ... "
+import { labels } from "../lang/messages/en/user.js";
+
 
 export class NoteBox {
     constructor(content = "", id = Date.now()) {
@@ -10,16 +11,16 @@ export class NoteBox {
         this.content = content;
 
         this.textBox = document.createElement('textarea');
-        this.textBox.placeholder = pretext;
+        this.textBox.placeholder = labels.preText;
         this.textBox.value = content;
         this.textBox.id = this.noteID;
 
         this.saveButton = document.createElement('button');
-        this.saveButton.textContent = "Save";
+        this.saveButton.textContent = labels.saveButton;
         this.saveButton.className = "save-button";
 
         this.removeButton = document.createElement('button');
-        this.removeButton.textContent = "Remove";
+        this.removeButton.textContent = labels.removeButton;
         this.removeButton.className = "remove-button";
     }
 
@@ -50,10 +51,10 @@ export class NoteContainer {
         localStorage.removeItem(id);
     }
 
-    renderNote(note) {    
+    renderNote(note) {
         this.container.appendChild(note.textBox);
         // Button group container
-        const buttonGroup = document.createElement('div');    
+        const buttonGroup = document.createElement('div');
         buttonGroup.className = "button-group";
         buttonGroup.appendChild(note.saveButton);
         buttonGroup.appendChild(note.removeButton);
