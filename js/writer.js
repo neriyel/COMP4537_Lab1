@@ -111,7 +111,7 @@ export class NoteContainer {
                 };
                 localStorage.setItem(id, JSON.stringify(noteObj));
             });
-        }, 2000);
+        }, 5000);
     }
 
     updateTimestamp() {
