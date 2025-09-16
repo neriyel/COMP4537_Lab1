@@ -26,8 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// todo: Load notes from local storage
-
+// todo: Load notes from local storag
 window.addEventListener('load', () => {
     noteContainer.loadNotes()
 })

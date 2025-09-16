@@ -73,10 +73,12 @@ export class NoteContainer {
     newNote() {
         const note = new NoteBox();
         this.renderNote(note);
+        this.saveNoteToStorage(note);
     }
 
     // Load all notes from local storage
     loadNotes() {
+        this.container.innerHTML = ""; // Clear existing notes in container
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const jsonValue = localStorage.getItem(key);
@@ -100,6 +102,7 @@ export class NoteContainer {
     startAutoSave() {
         setInterval(() => {
             this.updateTimestamp();
+            this.loadNotes(); // Reload notes from storage to reflect any external changes
             this.container.querySelectorAll('textarea').forEach(textarea => {
                 const id = textarea.id;
                 const noteObj = {

@@ -14,6 +14,6 @@ const container = document.getElementById("notes-container");
 const noteContainer = new NoteContainer(container);
 
 window.addEventListener('load', () => {
-    noteContainer.loadNotes();
+    // noteContainer.loadNotes();
     noteContainer.disableEditing();
 })
